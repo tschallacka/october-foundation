@@ -1,34 +1,38 @@
 +function ($) { "use strict";
 
-	/**
-	 * Set here your default application name.
-	 * Any capital letter will be replaced by lowercase and a - will be inserted 
-	 * in between.
-	 * ApplicationForBearTraps turns into application-for-bear-traps and 
-	 * this script will tag elements with the attributes <div data-application-for-bear-traps>
-	 * 
-	 */
-	var appName = 'PriceListEditor';
+    /**
+     * Set here your default application name.
+     * Any capital letter will be replaced by lowercase and a - will be inserted 
+     * in between.
+     * ApplicationForBearTraps turns into application-for-bear-traps and 
+     * this script will tag elements with the attributes <div data-application-for-bear-traps>
+     *
+     * The formatted name will be stored in the variable  `appID` 
+     * the jQuery selector will be stored in the variable `appDataHandler`
+     */
+    var appName = 'ApplicationForBearTraps';
+
 		
-	/**
-	 * Needs to be here, do not edit. Some default calculations to make your life easier.s
-	 */
-	var appID = appName.replace(/[^a-z]+/gi, '').replace(/(.)([A-Z])/g, "$1-$2").toLowerCase();var appDataHandler = '[data-'+appID+']';	var oc = 'oc.'+appName; var Base = $.oc.foundation.base, BaseProto = Base.prototype; var Application = function (element, options) { this.$el = $(element); this.options = options || {}; this.appID = appID; this.appName = appName; this.oc = oc; $.oc.foundation.controlUtils.markDisposable(element); Base.call(this); this.sysInit(); }; Application.prototype = Object.create(BaseProto); Application.prototype.constructor = Application;
+   /**
+    * Needs to be here, do not edit. 
+    * Some default calculations to make your life easier.
+    */
+    var appID = appName.replace(/[^a-z]+/gi, '').replace(/(.)([A-Z])/g, "$1-$2").toLowerCase();var appDataHandler = '[data-'+appID+']';	var oc = 'oc.'+appName; var Base = $.oc.foundation.base, BaseProto = Base.prototype; var Application = function (element, options) { this.$el = $(element); this.options = options || {}; this.appID = appID; this.appName = appName; this.oc = oc; $.oc.foundation.controlUtils.markDisposable(element); Base.call(this); this.sysInit(); }; Application.prototype = Object.create(BaseProto); Application.prototype.constructor = Application;
     
-	/**
+    /**
      * ================================================================================================================
      *            ****                       edit below this line                             ****
      * ================================================================================================================
      */
 	
-	/**
-	 * Bind jQuery event handlers here. 
-	 * @var type is the event type('on') or ('off') for binding and unbinding events
-	 * this.$el[type]('click',this.proxy(this.something));
-	 * 
-	 * this.bind('click',this.$el,this.something);
+    /**
+     * Bind jQuery event handlers here. 
+     * @var type is the event type('on') or ('off') for binding and unbinding events
+     * this.$el[type]('click',this.proxy(this.something));
+     * 
+     * this.bind('click',this.$el,this.something);
      * this.bind('click',this.$el,'.some-subclass',this.somethingelse);
-	 */
+     */
     Application.prototype.handlers = function(type) {
     	   	
     };
@@ -66,16 +70,14 @@
     
     
      
-    /**
-     * ====================END MENU CODE =================================
-     */
+
     
     
     
     /**
-     * ================================================================================================================
-     *            ****                       Do not edit below this line                             ****
-     * ================================================================================================================
+     * ================================================================================================
+     *            ****  XXXXXXXXXXXXX  Do not edit below this line  XXXXXXXXXXXXX  ****
+     * ================================================================================================
      */
     
     /**
@@ -117,7 +119,8 @@
     }
     
     
-    Application.prototype.sysDestroy = function() {
+    Application.prototype.sysDestroy = function() 
+    {
     	this.event_binding_type='off';
     	this.handlers(this.event_binding_type);
     	this.destroy();
@@ -134,7 +137,8 @@
         BaseProto.dispose.call(this)
     };
     
-    Application.prototype.getHandle = function(name) {
+    Application.prototype.getHandle = function(name) 
+    {
     	if(this.handle) {
     		return this.handle + name;
     	}
@@ -142,11 +146,13 @@
     	return this.getHandle(name);
     }
     
-    Application.prototype.request = function(requestname,data) {
+    Application.prototype.request = function(requestname,data) 
+    {
     	return this.$el.request(this.getHandle(requestname),data);
     }
     
-    Application.prototype.sysInit = function() {
+    Application.prototype.sysInit = function() 
+    {
     	this.$el.one('dispose-control', this.proxy(this.sysDestroy));
     	this.event_binding_type='on';
     	this.alloclist = [];
@@ -169,8 +175,8 @@
     $.fn[appName] = function (option) {
         var args = Array.prototype.slice.call(arguments, 1), items, result
         
-        items = this.each(function () {
-            var $this   = $(this);
+        items = this.each(function (index, elem) {
+            var $this   = $(elem);
             var data    = $this.data(oc);
             var options = $.extend({}, Application.DEFAULTS, $this.data(), typeof option == 'object' && option);
             
