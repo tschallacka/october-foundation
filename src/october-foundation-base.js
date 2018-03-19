@@ -12,12 +12,18 @@
      */
     var appName = 'ApplicationForBearTraps';
 
-		
+    /**
+     * Set your current version  here. If you are developing and this script gets served by ajax
+     * this will make sure the "old" version doesn't dual load on render and inactivates.
+     * Please use integers here. not 1.0.1 because it uses a current less than appVersion comparisan function.
+     */
+    var appVersion = 0;
+    
    /**
     * Needs to be here, do not edit. 
     * Some default calculations to make your life easier.
     */
-    var appID = appName.replace(/[^a-z]+/gi, '').replace(/(.)([A-Z])/g, "$1-$2").toLowerCase();var appDataHandler = '[data-'+appID+']';	var oc = 'oc.'+appName; var Base = $.oc.foundation.base, BaseProto = Base.prototype; var Application = function (element, options) { this.$el = $(element); this.options = options || {}; this.appID = appID; this.appName = appName; this.oc = oc; $.oc.foundation.controlUtils.markDisposable(element); Base.call(this); this.sysInit(); }; Application.prototype = Object.create(BaseProto); Application.prototype.constructor = Application;
+    var appID = appName.replace(/[^a-z]+/gi, '').replace(/(.)([A-Z])/g, "$1-$2").toLowerCase();var appDataHandler = '[data-'+appID+']';	var oc = 'oc.'+appName; var Base = $.oc.foundation.base, BaseProto = Base.prototype; var Application = function (element, options) { this.$el = $(element); this.options = options || {}; this.appID = appID; this.appName = appName; this.oc = oc; $.oc.foundation.controlUtils.markDisposable(element); Base.call(this); this.sysInit(); }; Application.prototype = Object.create(BaseProto); Application.prototype.constructor = Application;var res = window.hasOwnProperty(appName+"_version") ? window[appName+"_version"] : 0;if(res == undefined || res < appVersion ) {window[appName+"_version"] = appVersion;}
     
     /**
      * ================================================================================================================
@@ -206,8 +212,10 @@
 
     // Add this only if required
     $(document).render(function (){
-    	var $elems = $(appDataHandler);
-    	$elems[appName]();
+        if(window[appName+"_version"] == appVersion) {
+            var $elems = $(appDataHandler);
+            $elems[appName]();
+        }
     	
     });
 
