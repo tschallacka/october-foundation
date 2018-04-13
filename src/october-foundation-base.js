@@ -16,8 +16,9 @@
      * Set your current version  here. If you are developing and this script gets served by ajax
      * this will make sure the "old" version doesn't dual load on render and inactivates.
      * Please use integers here. not 1.0.1 because it uses a current less than appVersion comparisan function.
+     * Also don't use zero. the script won't run then.
      */
-    var appVersion = 0;
+    var appVersion = 1;
     
    /**
     * Needs to be here, do not edit. 
