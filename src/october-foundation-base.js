@@ -51,6 +51,8 @@
      * will be the same as this.foobar = 42;
      * only difference is that the alloc'ed variable will be cleand up automatically on destroy
      * whislt the foobar needs a this.foobar=null in the destroy function.
+     * call this.destroyUponModalClose() when you use this app in a modal and the data-disposable
+     * method isn't triggered upon modal close.
      */
     Application.prototype.init = function() {
     	/**
@@ -132,7 +134,9 @@
     	this.handlers(this.event_binding_type);
     	this.destroy();
     	this.free();
-    	this.$el.off('dispose-control', this.proxy(this.dispose))
+    	this.$el.off('dispose-control', this.proxy(this.sysDestroy))
+	if(this._document) this._document.off('hidden.bs.modal', this.proxy(this.sysDestroy));
+	this._document = null;
         this.$el.removeData(this.oc);
     	this.requesthandle = null;
         this.$el = null
@@ -157,7 +161,13 @@
     {
     	return this.$el.request(this.getHandle(requestname),data);
     }
-    
+	       
+    Application.prototype.destroyUponModalClose() 
+    {
+	this._document = $(document);
+	this._document.one('hidden.bs.modal', this.proxy(this.sysDestroy));
+    }
+	       
     Application.prototype.sysInit = function() 
     {
     	this.$el.one('dispose-control', this.proxy(this.sysDestroy));
